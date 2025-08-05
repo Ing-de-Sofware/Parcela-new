@@ -47,6 +47,19 @@ class _RegisterWidgetState extends State<RegisterWidget>
       // También guardar directamente para asegurar disponibilidad inmediata
       await prefs.setString('user_apellidos', _model.lastnameTextController.text);
     }
+
+    // Guardar email y teléfono igual que los otros campos
+    if (_model.emailAddressTextController?.text.isNotEmpty == true) {
+      await prefs.setString('user_email', _model.emailAddressTextController!.text);
+      await prefs.setString('registered_with', 'email');
+    }
+    if (_model.phoneTextController?.text.isNotEmpty == true) {
+      await prefs.setString('user_phone', _model.phoneTextController!.text);
+      // Si no se registró con email, entonces se registró con teléfono
+      if (_model.emailAddressTextController?.text.isEmpty == true) {
+        await prefs.setString('registered_with', 'phone');
+      }
+    }
   }
 
   @override

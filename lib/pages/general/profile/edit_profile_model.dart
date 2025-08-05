@@ -15,6 +15,16 @@ class EditProfileModel extends FlutterFlowModel<EditProfileWidget> {
   TextEditingController? apellidosTextController;
   String? Function(BuildContext, String?)? apellidosTextControllerValidator;
 
+  // State field(s) for email widget.
+  FocusNode? emailFocusNode;
+  TextEditingController? emailTextController;
+  String? Function(BuildContext, String?)? emailTextControllerValidator;
+
+  // State field(s) for phone widget.
+  FocusNode? phoneFocusNode;
+  TextEditingController? phoneTextController;
+  String? Function(BuildContext, String?)? phoneTextControllerValidator;
+
   @override
   void initState(BuildContext context) {
     nombresTextController = TextEditingController();
@@ -22,6 +32,12 @@ class EditProfileModel extends FlutterFlowModel<EditProfileWidget> {
 
     apellidosTextController = TextEditingController();
     apellidosFocusNode = FocusNode();
+
+    emailTextController = TextEditingController();
+    emailFocusNode = FocusNode();
+
+    phoneTextController = TextEditingController();
+    phoneFocusNode = FocusNode();
   }
 
   @override
@@ -31,5 +47,11 @@ class EditProfileModel extends FlutterFlowModel<EditProfileWidget> {
 
     apellidosFocusNode?.dispose();
     apellidosTextController?.dispose();
+
+    emailFocusNode?.dispose();
+    emailTextController?.dispose();
+
+    phoneFocusNode?.dispose();
+    phoneTextController?.dispose();
   }
 }
