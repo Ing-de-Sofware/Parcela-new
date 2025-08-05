@@ -1,6 +1,8 @@
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/components/host_review_modal/host_review_modal_widget.dart';
 import 'dart:math';
 import 'dart:ui';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
@@ -950,6 +952,64 @@ class _TravelerDetailWidgetState extends State<TravelerDetailWidget>
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+              // Botón para calificar al viajero (solo para anfitriones)
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+                child: FFButtonWidget(
+                  onPressed: () async {
+                    await showModalBottomSheet(
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      enableDrag: false,
+                      context: context,
+                      builder: (context) {
+                        return GestureDetector(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            FocusManager.instance.primaryFocus?.unfocus();
+                          },
+                          child: Padding(
+                            padding: MediaQuery.viewInsetsOf(context),
+                            child: HostReviewModalWidget(
+                              travelerName: 'Diego Alonso',
+                              carPlate: 'ABC-123',
+                              carModel: 'Volkswagen',
+                              carColor: 'Azul marino',
+                              phoneNumber: '976548456',
+                              profileImageUrl: 'assets/images/profile-placeholder.jpg',
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  text: 'Calificar Viajero',
+                  icon: Icon(
+                    Icons.star_rate,
+                    color: Colors.white,
+                    size: 20.0,
+                  ),
+                  options: FFButtonOptions(
+                    width: double.infinity,
+                    height: 50.0,
+                    padding: EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                    iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    color: FlutterFlowTheme.of(context).primary,
+                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                          font: GoogleFonts.inter(),
+                          color: Colors.white,
+                          letterSpacing: 0.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                    elevation: 3.0,
+                    borderSide: BorderSide(
+                      color: Colors.transparent,
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(12.0),
                   ),
                 ),
               ),
