@@ -13,6 +13,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import 'serialization_util.dart';
 
 import '/index.dart';
+import '/components/chat_conversation/chat_conversation_widget.dart';
 
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
@@ -151,7 +152,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: TutorialWidget.routeName,
           path: TutorialWidget.routePath,
           builder: (context, params) => TutorialWidget(),
-        )
+        ),
+        FFRoute(
+          name: ChatConversationWidget.routeName,
+          path: ChatConversationWidget.routePath,
+          builder: (context, params) => ChatConversationWidget(),
+        ),
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
 

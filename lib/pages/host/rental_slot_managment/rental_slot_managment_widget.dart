@@ -1,4 +1,5 @@
 import '/components/navigation_botttom/navigation_botttom_widget.dart';
+import '/components/chat_conversation/chat_conversation_widget.dart';
 import '/components/traveler_detail/traveler_detail_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -593,7 +594,12 @@ class _RentalSlotManagmentWidgetState extends State<RentalSlotManagmentWidget> {
                                       Expanded(
                                         child: FFButtonWidget(
                                           onPressed: () {
-                                            print('Button pressed ...');
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => const ChatConversationWidget(),
+                                              ),
+                                            );
                                           },
                                           text: 'Conversar',
                                           icon: Icon(
