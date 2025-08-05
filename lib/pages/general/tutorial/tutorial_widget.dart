@@ -1,16 +1,12 @@
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:math';
-import 'dart:ui';
 import '/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'tutorial_model.dart';
 export 'tutorial_model.dart';
 
@@ -31,6 +27,42 @@ class _TutorialWidgetState extends State<TutorialWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   final animationsMap = <String, AnimationInfo>{};
+
+  Future<void> _saveRegistrationDataForHost() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Obtener los datos de registro que están almacenados temporalmente
+    final nombres = prefs.getString('temp_user_nombres') ?? '';
+    final apellidos = prefs.getString('temp_user_apellidos') ?? '';
+
+    // Guardar los datos permanentemente para el perfil (redundante pero seguro)
+    if (nombres.isNotEmpty && apellidos.isNotEmpty) {
+      await prefs.setString('user_nombres', nombres);
+      await prefs.setString('user_apellidos', apellidos);
+
+      // Limpiar los datos temporales después de confirmar el guardado
+      await prefs.remove('temp_user_nombres');
+      await prefs.remove('temp_user_apellidos');
+    }
+  }
+
+  Future<void> _saveRegistrationDataForTraveler() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Obtener los datos de registro que están almacenados temporalmente
+    final nombres = prefs.getString('temp_user_nombres') ?? '';
+    final apellidos = prefs.getString('temp_user_apellidos') ?? '';
+
+    // Guardar los datos permanentemente para el perfil también para viajeros
+    if (nombres.isNotEmpty && apellidos.isNotEmpty) {
+      await prefs.setString('user_nombres', nombres);
+      await prefs.setString('user_apellidos', apellidos);
+
+      // Limpiar los datos temporales después de confirmar el guardado
+      await prefs.remove('temp_user_nombres');
+      await prefs.remove('temp_user_apellidos');
+    }
+  }
 
   @override
   void initState() {
@@ -159,20 +191,35 @@ class _TutorialWidgetState extends State<TutorialWidget>
                 children: [
                   Container(
                     width: double.infinity,
-                    height: 250.0,
+                    height: 280.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                     alignment: AlignmentDirectional(0.0, 0.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          '¿Que quieres ser?',
-                          style: FlutterFlowTheme.of(context)
-                              .displaySmall
-                              .override(
-                                font: GoogleFonts.interTight(
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 16.0),
+                          child: Text(
+                            '¿Qué quieres ser?',
+                            textAlign: TextAlign.center,
+                            style: FlutterFlowTheme.of(context)
+                                .displaySmall
+                                .override(
+                                  font: GoogleFonts.interTight(
+                                    fontWeight: FlutterFlowTheme.of(context)
+                                        .displaySmall
+                                        .fontWeight,
+                                    fontStyle: FlutterFlowTheme.of(context)
+                                        .displaySmall
+                                        .fontStyle,
+                                  ),
+                                  color:
+                                      FlutterFlowTheme.of(context).secondaryText,
+                                  letterSpacing: 0.0,
                                   fontWeight: FlutterFlowTheme.of(context)
                                       .displaySmall
                                       .fontWeight,
@@ -180,24 +227,17 @@ class _TutorialWidgetState extends State<TutorialWidget>
                                       .displaySmall
                                       .fontStyle,
                                 ),
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryText,
-                                letterSpacing: 0.0,
-                                fontWeight: FlutterFlowTheme.of(context)
-                                    .displaySmall
-                                    .fontWeight,
-                                fontStyle: FlutterFlowTheme.of(context)
-                                    .displaySmall
-                                    .fontStyle,
-                              ),
+                          ),
                         ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.asset(
-                            'assets/images/Parcela.png',
-                            width: 286.8,
-                            height: 200.0,
-                            fit: BoxFit.cover,
+                        Flexible(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Image.asset(
+                              'assets/images/Parcela.png',
+                              width: 286.8,
+                              height: 200.0,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ],
@@ -220,6 +260,9 @@ class _TutorialWidgetState extends State<TutorialWidget>
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () async {
+                          // Guardar automáticamente los datos del registro para viajeros también
+                          await _saveRegistrationDataForTraveler();
+
                           context.pushNamed(
                             TutorialTravelerWidget.routeName,
                             extra: <String, dynamic>{
@@ -328,9 +371,9 @@ class _TutorialWidgetState extends State<TutorialWidget>
                                   .addToStart(SizedBox(height: 18.0)),
                             ),
                           ),
-                        ),
-                      ).animateOnPageLoad(
-                          animationsMap['containerOnPageLoadAnimation2']!),
+                        ).animateOnPageLoad(
+                            animationsMap['containerOnPageLoadAnimation2']!),
+                      ),
                     ),
                   ),
                   Align(
@@ -344,6 +387,9 @@ class _TutorialWidgetState extends State<TutorialWidget>
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () async {
+                          // Guardar automáticamente los datos del registro para anfitriones
+                          await _saveRegistrationDataForHost();
+
                           context.pushNamed(
                             TutorialHostWidget.routeName,
                             extra: <String, dynamic>{
@@ -451,16 +497,14 @@ class _TutorialWidgetState extends State<TutorialWidget>
                                   .addToStart(SizedBox(height: 18.0)),
                             ),
                           ),
-                        ),
-                      ).animateOnPageLoad(
-                          animationsMap['containerOnPageLoadAnimation3']!),
+                        ).animateOnPageLoad(
+                            animationsMap['containerOnPageLoadAnimation3']!),
+                      ),
                     ),
                   ),
                 ],
               ),
-            ]
-                .addToStart(SizedBox(height: 30.0))
-                .addToEnd(SizedBox(height: 30.0)),
+            ],
           ),
         ),
       ),

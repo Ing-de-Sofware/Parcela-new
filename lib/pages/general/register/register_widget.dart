@@ -11,6 +11,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'register_model.dart';
 export 'register_model.dart';
 
@@ -31,6 +32,35 @@ class _RegisterWidgetState extends State<RegisterWidget>
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   final animationsMap = <String, AnimationInfo>{};
+
+  Future<void> _saveRegistrationDataTemporarily() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Guardar temporalmente los nombres y apellidos para usar después
+    if (_model.nameTextController.text.isNotEmpty) {
+      await prefs.setString('temp_user_nombres', _model.nameTextController.text);
+      // También guardar directamente para asegurar disponibilidad inmediata
+      await prefs.setString('user_nombres', _model.nameTextController.text);
+    }
+    if (_model.lastnameTextController.text.isNotEmpty) {
+      await prefs.setString('temp_user_apellidos', _model.lastnameTextController.text);
+      // También guardar directamente para asegurar disponibilidad inmediata
+      await prefs.setString('user_apellidos', _model.lastnameTextController.text);
+    }
+
+    // Guardar email y teléfono igual que los otros campos
+    if (_model.emailAddressTextController?.text.isNotEmpty == true) {
+      await prefs.setString('user_email', _model.emailAddressTextController!.text);
+      await prefs.setString('registered_with', 'email');
+    }
+    if (_model.phoneTextController?.text.isNotEmpty == true) {
+      await prefs.setString('user_phone', _model.phoneTextController!.text);
+      // Si no se registró con email, entonces se registró con teléfono
+      if (_model.emailAddressTextController?.text.isEmpty == true) {
+        await prefs.setString('registered_with', 'phone');
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -1595,6 +1625,9 @@ class _RegisterWidgetState extends State<RegisterWidget>
                                                     0.0, 0.0),
                                                 child: FFButtonWidget(
                                                   onPressed: () async {
+                                                    // Guardar temporalmente los datos del registro
+                                                    await _saveRegistrationDataTemporarily();
+
                                                     await showModalBottomSheet(
                                                       isScrollControlled: true,
                                                       backgroundColor:

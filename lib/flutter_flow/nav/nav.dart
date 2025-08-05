@@ -69,6 +69,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => ProfileWidget(),
         ),
         FFRoute(
+          name: EditProfileWidget.routeName,
+          path: EditProfileWidget.routePath,
+          builder: (context, params) => EditProfileWidget(),
+        ),
+        FFRoute(
           name: ParkingListWidget.routeName,
           path: ParkingListWidget.routePath,
           builder: (context, params) => ParkingListWidget(),

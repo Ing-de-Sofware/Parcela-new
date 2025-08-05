@@ -4,6 +4,7 @@ export '/pages/general/login_page/login_page_widget.dart' show LoginPageWidget;
 export '/pages/traveler/parking_map/parking_map_widget.dart'
     show ParkingMapWidget;
 export '/pages/general/profile/profile_widget.dart' show ProfileWidget;
+export '/pages/general/profile/edit_profile_widget.dart' show EditProfileWidget;
 export '/pages/traveler/parking_list/parking_list_widget.dart'
     show ParkingListWidget;
 export '/pages/general/notifications/notifications_widget.dart'
